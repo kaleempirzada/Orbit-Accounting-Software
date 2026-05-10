@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Register Warranty | UD Store</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:    #0096d6;
+      --dark:    #014a7f;
+      --gray:    #f5f5f5;
+      --border:  #d0d0d0;
+      --mid:     #666;
+      --success: #2e7d32;
+      --error:   #c62828;
+      --radius:  4px;
+    }
+    body { font-family: 'Inter', Arial, sans-serif; background: #f0f4f8; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header */
+    header { background: var(--dark); color: #fff; padding: 0 24px; }
+    .hdr { max-width: 960px; margin: auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .logo { font-size: 20px; font-weight: 700; color: #fff; text-decoration: none; }
+    .logo span { font-weight: 300; }
+    header a { color: #b8d9f0; font-size: 13px; text-decoration: none; }
+    header a:hover { color: #fff; }
+
+    /* Layout */
+    main { flex: 1; max-width: 760px; margin: 36px auto; padding: 0 16px; width: 100%; }
+
+    /* Login gate */
+    #loginSection {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,.1);
+    }
+    #loginSection h1 { font-size: 22px; margin-bottom: 6px; color: var(--dark); }
+    #loginSection p  { color: var(--mid); font-size: 14px; margin-bottom: 24px; }
+
+    /* Form card */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.1);
+      overflow: hidden;
+    }
+    .card-header {
+      background: var(--dark);
+      color: #fff;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-header h1 { font-size: 18px; font-weight: 600; }
+    .card-header span { font-size: 12px; opacity: .7; }
+    .card-body { padding: 28px; }
+
+    /* Form rows */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--mid); }
+    input, select {
+      padding: 10px 14px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: none;
+      font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,150,214,.14);
+    }
+    input[style*="uppercase"] { text-transform: uppercase; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      padding: 11px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background .2s, transform .1s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--blue);  color: #fff; }
+    .btn-primary:hover { background: var(--dark); }
+    .btn-secondary { background: var(--gray); color: #333; border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e0e0e0; }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 14px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+      z-index: 999;
+      max-width: 360px;
+    }
+    #toast.show { opacity: 1; }
+    #toast.success { background: var(--success); }
+    #toast.error   { background: var(--error); }
+
+    /* Config section */
+    .config-section {
+      margin-top: 28px;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 20px;
+    }
+    .config-section summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--blue); }
+    .config-section .cfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .config-section .cfg-full { grid-column: 1/-1; }
+    .config-section input { font-size: 13px; padding: 8px 12px; }
+    .config-note { font-size: 12px; color: var(--mid); margin-top: 10px; line-height: 1.5; }
+
+    /* Records table */
+    .records-section { margin-top: 32px; }
+    .records-section h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--dark); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--dark); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: .4px; }
+    td { padding: 10px 14px; border-bottom: 1px solid #eee; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f7f9fc; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-active  { background: #e8f5e9; color: var(--success); }
+    .badge-expired { background: #fff3e0; color: #e65100; }
+
+    /* Spinner */
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 560px) {
+      .form-grid, .config-section .cfg-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hdr">
+    <a href="https://udstore.in" class="logo">UD <span>Store</span></a>
+    <div style="display:flex;gap:20px;align-items:center;">
+      <span style="color:#7ab8d9;font-size:13px;">Admin Panel</span>
+      <a href="/warranty/">← Warranty Check</a>
+      <a href="https://udstore.in">udstore.in</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── Login gate ───────────────────────────────────── -->
+  <div id="loginSection">
+    <h1>🔐 Admin Access</h1>
+    <p>Enter the admin password to manage warranty records.</p>
+    <div style="max-width:300px;margin:auto;">
+      <input id="pwdInput" type="password" placeholder="Password" style="width:100%;margin-bottom:12px;" onkeydown="if(event.key==='Enter')doLogin()" />
+      <button class="btn btn-primary" style="width:100%;" onclick="doLogin()">Login</button>
+    </div>
+    <p id="loginErr" style="color:#c62828;font-size:13px;margin-top:10px;"></p>
+  </div>
+
+  <!-- ── Main admin area (hidden until login) ────────── -->
+  <div id="adminArea" style="display:none;">
+
+    <!-- Registration form -->
+    <div class="card">
+      <div class="card-header">
+        <h1>Register New Warranty</h1>
+        <span id="syncStatus">Connecting…</span>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fCustomer">Customer Name *</label>
+            <input id="fCustomer" type="text" placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label for="fPhone">Phone / Contact</label>
+            <input id="fPhone" type="text" placeholder="03XX-XXXXXXX" />
+          </div>
+          <div class="form-group">
+            <label for="fProduct">Product Name *</label>
+            <input id="fProduct" type="text" placeholder="HP LaserJet Pro MFP M428fdw" />
+          </div>
+          <div class="form-group">
+            <label for="fSerial">Serial Number *</label>
+            <input id="fSerial" type="text" placeholder="SN-202501-001" style="text-transform:uppercase;" />
+          </div>
+          <div class="form-group">
+            <label for="fInvoice">Invoice Number *</label>
+            <input id="fInvoice" type="text" placeholder="INV-0001" style="text-transform:uppercase;" />
+          </div>
+          <div class="form-group">
+            <label for="fWarranty">Warranty Period</label>
+            <select id="fWarranty">
+              <option value="1">1 Year</option>
+              <option value="2">2 Years</option>
+              <option value="3">3 Years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fPurchase">Purchase Date *</label>
+            <input id="fPurchase" type="date" />
+          </div>
+          <div class="form-group">
+            <label for="fExpiry">Expiry Date (auto-filled)</label>
+            <input id="fExpiry" type="date" readonly style="background:#f5f5f5;" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+          <button class="btn btn-primary" id="saveBtn" onclick="saveWarranty()">Save &amp; Register</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GitHub config -->
+    <details class="config-section">
+      <summary>⚙ GitHub Settings (required to save data)</summary>
+      <div class="cfg-grid">
+        <div class="form-group">
+          <label>GitHub Username</label>
+          <input id="cfgOwner" type="text" placeholder="your-username" />
+        </div>
+        <div class="form-group">
+          <label>Repository Name</label>
+          <input id="cfgRepo" type="text" placeholder="udstore.in" />
+        </div>
+        <div class="form-group cfg-full">
+          <label>Personal Access Token (PAT)</label>
+          <input id="cfgToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+        </div>
+        <div class="form-group cfg-full">
+          <label>Data File Path in Repo</label>
+          <input id="cfgDataFile" type="text" placeholder="warranty/warranties.txt" />
+        </div>
+      </div>
+      <p class="config-note">
+        ⚠ Your PAT is stored only in this browser's localStorage — never in the repository.<br/>
+        The token needs <strong>repo → contents → write</strong> permission.<br/>
+        <strong>Data File Path</strong> = the path of <code>warranties.txt</code> inside your repo.<br/>
+        If your site repo is <code>udstore.in</code> and warranty is a subfolder, use: <code>warranty/warranties.txt</code><br/>
+        Create a PAT at: <strong>GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>
+      </p>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" style="font-size:13px;padding:8px 20px;" onclick="saveConfig()">Save Settings</button>
+      </div>
+    </details>
+
+    <!-- Records list -->
+    <div class="records-section">
+      <h2>Registered Warranties <span id="recordCount" style="font-weight:400;color:#888;font-size:14px;"></span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Product</th>
+              <th>Serial</th>
+              <th>Invoice</th>
+              <th>Purchase</th>
+              <th>Expiry</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+            <tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /adminArea -->
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ── Simple password (change this!) ────────────────────────
+const ADMIN_PASSWORD = 'udstore123';
+
+// ── Default data file path inside the GitHub repo ──────────
+// If site is at udstore.in/warranty/ inside repo root,
+// the file sits at: warranty/warranties.txt in the repo.
+// You can override this in ⚙ GitHub Settings below.
+const DEFAULT_DATA_FILE = 'warranty/warranties.txt';
+
+// ── Login ──────────────────────────────────────────────────
+function doLogin() {
+  const pwd = document.getElementById('pwdInput').value;
+  if (pwd === ADMIN_PASSWORD) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminArea').style.display = 'block';
+    loadConfig();
+    loadRecords();
+    setTodayDate();
+  } else {
+    document.getElementById('loginErr').textContent = 'Incorrect password. Try again.';
+  }
+}
+
+// ── Config helpers ─────────────────────────────────────────
+function loadConfig() {
+  const c = JSON.parse(localStorage.getItem('ud_gh_config') || '{}');
+  if (c.owner)    document.getElementById('cfgOwner').value    = c.owner;
+  if (c.repo)     document.getElementById('cfgRepo').value     = c.repo;
+  if (c.token)    document.getElementById('cfgToken').value    = c.token;
+  if (c.dataFile) document.getElementById('cfgDataFile').value = c.dataFile;
+  else            document.getElementById('cfgDataFile').value = DEFAULT_DATA_FILE;
+}
+function saveConfig() {
+  const c = {
+    owner:    document.getElementById('cfgOwner').value.trim(),
+    repo:     document.getElementById('cfgRepo').value.trim(),
+    token:    document.getElementById('cfgToken').value.trim(),
+    dataFile: document.getElementById('cfgDataFile').value.trim() || DEFAULT_DATA_FILE
+  };
+  localStorage.setItem('ud_gh_config', JSON.stringify(c));
+  showToast('GitHub settings saved!', 'success');
+  loadRecords();
+}
+function getConfig() {
+  const c = JSON.parse(localStorage.getItem('ud_gh_config') || '{}');
+  if (!c.dataFile) c.dataFile = DEFAULT_DATA_FILE;
+  return c;
+}
+
+// ── Date helpers ───────────────────────────────────────────
+function setTodayDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('fPurchase').value = today;
+  calcExpiry();
+}
+function calcExpiry() {
+  const pd = document.getElementById('fPurchase').value;
+  const yr = parseInt(document.getElementById('fWarranty').value, 10) || 1;
+  if (!pd) return;
+  const d = new Date(pd);
+  d.setFullYear(d.getFullYear() + yr);
+  document.getElementById('fExpiry').value = d.toISOString().split('T')[0];
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('fPurchase').addEventListener('change', calcExpiry);
+  document.getElementById('fWarranty').addEventListener('change', calcExpiry);
+});
+
+// ── Parse / serialize warranties.txt ──────────────────────
+function parseTxt(text) {
+  const rows = [];
+  for (const line of text.split('\n')) {
+    const t = line.trim();
+    if (!t || t.startsWith('SERIAL')) continue;
+    const p = t.split('|');
+    if (p.length >= 6) {
+      rows.push({
+        serial: p[0].trim(), invoice: p[1].trim(), product: p[2].trim(),
+        customer: p[3].trim(), purchase: p[4].trim(), expiry: p[5].trim(),
+        phone: p[6] ? p[6].trim() : ''
+      });
+    }
+  }
+  return rows;
+}
+function serializeTxt(rows) {
+  const header = 'SERIAL|INVOICE|PRODUCT|CUSTOMER|PURCHASE_DATE|EXPIRY_DATE|PHONE';
+  const lines  = rows.map(r => `${r.serial}|${r.invoice}|${r.product}|${r.customer}|${r.purchase}|${r.expiry}|${r.phone||''}`);
+  return header + '\n' + lines.join('\n') + '\n';
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ── GitHub API helpers ─────────────────────────────────────
+async function ghFetch(method, body, sha) {
+  const { owner, repo, token, dataFile } = getConfig();
+  if (!owner || !repo || !token) throw new Error('GitHub settings not configured. Open ⚙ settings above.');
+  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${dataFile}`;
+  const headers = { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' };
+
+  if (method === 'GET') {
+    const r = await fetch(apiUrl, { headers });
+    if (r.status === 404) return { rows: [], sha: null };
+    if (!r.ok) throw new Error('Cannot reach GitHub. Check your token and repo name.');
+    const j = await r.json();
+    const text = decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    return { rows: parseTxt(text), sha: j.sha };
+  }
+  // PUT
+  const r = await fetch(apiUrl, {
+    method: 'PUT', headers,
+    body: JSON.stringify({ message: body.message, content: btoa(unescape(encodeURIComponent(body.content))), sha })
+  });
+  if (!r.ok) { const e = await r.json(); throw new Error(e.message || 'GitHub write failed'); }
+  return r.json();
+}
+
+// ── Load & render records ──────────────────────────────────
+async function loadRecords() {
+  const { owner, repo } = getConfig();
+  const statusEl = document.getElementById('syncStatus');
+  const tbody = document.getElementById('recordsBody');
+
+  if (!owner || !repo) {
+    statusEl.textContent = '⚠ Not configured';
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">Configure GitHub settings above to load records.</td></tr>`;
+    return;
+  }
+
+  statusEl.textContent = 'Syncing…';
+  try {
+    const { rows } = await ghFetch('GET');
+    document.getElementById('recordCount').textContent = `(${rows.length} records)`;
+    statusEl.textContent = `✓ ${rows.length} records loaded`;
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#888;padding:20px;">No warranty records yet.</td></tr>`;
+      return;
+    }
+
+    const today = new Date();
+    tbody.innerHTML = rows.map(r => {
+      const exp = new Date(r.expiry + 'T00:00:00');
+      const active = exp >= today;
+      const badge = active
+        ? '<span class="badge badge-active">Active</span>'
+        : '<span class="badge badge-expired">Expired</span>';
+      return `<tr>
+        <td>${r.customer}</td>
+        <td>${r.product}</td>
+        <td><code>${r.serial}</code></td>
+        <td>${r.invoice}</td>
+        <td>${fmtDate(r.purchase)}</td>
+        <td>${fmtDate(r.expiry)}</td>
+        <td>${badge}</td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    statusEl.textContent = '✕ Error';
+    showToast(e.message, 'error');
+  }
+}
+
+// ── Save new warranty ──────────────────────────────────────
+async function saveWarranty() {
+  const customer = document.getElementById('fCustomer').value.trim();
+  const product  = document.getElementById('fProduct').value.trim();
+  const serial   = document.getElementById('fSerial').value.trim().toUpperCase();
+  const invoice  = document.getElementById('fInvoice').value.trim().toUpperCase();
+  const purchase = document.getElementById('fPurchase').value;
+  const expiry   = document.getElementById('fExpiry').value;
+  const phone    = document.getElementById('fPhone').value.trim();
+
+  if (!customer || !product || !serial || !invoice || !purchase || !expiry) {
+    showToast('Please fill all required (*) fields.', 'error'); return;
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Saving…';
+
+  try {
+    const { rows, sha } = await ghFetch('GET');
+
+    if (rows.some(r => r.serial === serial)) {
+      throw new Error(`Serial number "${serial}" is already registered.`);
+    }
+    if (rows.some(r => r.invoice === invoice)) {
+      throw new Error(`Invoice number "${invoice}" is already registered.`);
+    }
+
+    rows.push({ serial, invoice, product, customer, purchase, expiry, phone });
+    const newContent = serializeTxt(rows);
+
+    await ghFetch('PUT', { message: `Register warranty: ${serial}`, content: newContent }, sha);
+
+    showToast(`✓ Warranty registered for ${customer}`, 'success');
+    clearForm();
+    loadRecords();
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Save &amp; Register';
+  }
+}
+
+// ── UI helpers ─────────────────────────────────────────────
+function clearForm() {
+  ['fCustomer','fPhone','fProduct','fSerial','fInvoice'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fWarranty').value = '1';
+  setTodayDate();
+}
+
+let toastTimer;
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = '', 3500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UD Store | Register Warranty</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/w/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
+            <a href="/w/" class="logo">UD STORE</a>
+            <div class="nav-links">
+                <a href="/w/warranty">Verify Warranty</a>
+                <a href="/w/register" class="active">Register Product</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero animate-fade">
+            <h1>Register Your <span style="color: var(--primary)">Product</span></h1>
+            <p>Complete the form below to activate your warranty coverage.</p>
+            
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <form id="registerForm" onsubmit="event.preventDefault(); handleRegistration();">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="customerName">Customer Name</label>
+                            <input type="text" id="customerName" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="invoiceNumber">Invoice Number</label>
+                            <input type="text" id="invoiceNumber" placeholder="INV-0000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemName">Item Name</label>
+                        <input type="text" id="itemName" placeholder="Product Name / Model" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serialNumber">Serial Number</label>
+                        <input type="text" id="serialNumber" placeholder="S/N: XXXXXX" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="purchaseDate">Purchase Date</label>
+                            <input type="date" id="purchaseDate" required onchange="calculateExpiry()">
+                        </div>
+                        <div class="form-group">
+                            <label for="warrantyMonths">Warranty Period (Months)</label>
+                            <input type="number" id="warrantyMonths" value="12" min="1" required onchange="calculateExpiry()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Warranty Expiry Date (Auto-calculated)</label>
+                        <input type="text" id="expiryDate" readonly style="background: rgba(255,255,255,0.05); color: var(--accent);">
+                    </div>
+
+                    <button type="submit">Register Warranty</button>
+                </form>
+
+                <div id="registerResult" class="result-box"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 UD Store. All rights reserved.</p>
+    </footer>
+
+    <script src="/w/js/db.js"></script>
+    <script src="/w/js/app.js"></script>
+</body>
+</html>

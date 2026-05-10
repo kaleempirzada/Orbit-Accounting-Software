@@ -1,10 +1,10 @@
 [
     {
-        "customerName": "Demo Customer",
-        "invoiceNumber": "INV-0000",
-        "itemName": "Demo Product",
-        "serialNumber": "DEMO-123",
-        "purchaseDate": "2024-01-01",
-        "expiryDate": "2025-01-01"
+        "customerName": "Mohd Amin Bhat",
+        "invoiceNumber": "INV-239/25",
+        "itemName": "HP Pavillion Battery LPC",
+        "serialNumber": "inv-239/25",
+        "purchaseDate": "2025-04-16",
+        "expiryDate": "2026-04-16"
     }
 ]

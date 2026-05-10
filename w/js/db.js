@@ -1,17 +1,18 @@
 /**
  * Database abstraction layer for GitHub-hosted data
- * Stores and retrieves warranty data from a 'warranties.json' file in the GitHub repository.
+ * Stores and retrieves warranty data from a 'warranties.txt' file in the GitHub repository.
  */
 
 // ==========================================
 // CONFIGURATION - PLEASE FILL THIS OUT
 // ==========================================
-const PUBLIC_GITHUB_USER = 'kaleem-pirzada'; // e.g. 'kaleem-pirzada'
-const PUBLIC_GITHUB_REPO = 'Orbit-Accounting-Software'; // e.g. 'warranty-data'
+const PUBLIC_GITHUB_USER = 'kaleem-pirzada'; 
+const PUBLIC_GITHUB_REPO = 'Orbit-Accounting-Software'; 
 // ==========================================
 
 const GITHUB_CONFIG_KEY = 'udstore_github_config';
 const LOCAL_STORAGE_KEY = 'udstore_warranty_db';
+const DATA_FILE_PATH = 'warranties.txt'; // Changed from .json to .txt
 
 // Helper to get GitHub configuration (stored in browser for merchant)
 function getGitHubConfig() {
@@ -28,26 +29,26 @@ async function findWarranty(query) {
     const merchantConfig = getGitHubConfig();
     let data = [];
 
-    // Determine the best URL to fetch data from
-    // 1. Use Merchant Config if available
-    // 2. Use Public Constants if available
-    // 3. Fallback to relative path (slowest to update on GitHub Pages)
-
     let owner = merchantConfig?.owner || PUBLIC_GITHUB_USER;
     let repo = merchantConfig?.repo || PUBLIC_GITHUB_REPO;
-
+    
     let url;
     if (owner && repo) {
-        // raw.githubusercontent.com is instant and doesn't wait for GitHub Pages to rebuild
-        url = `https://raw.githubusercontent.com/${owner}/${repo}/main/warranties.json`;
+        url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${DATA_FILE_PATH}`;
     } else {
-        url = '../warranties.json';
+        url = `../${DATA_FILE_PATH}`;
     }
 
     try {
         const response = await fetch(url + '?t=' + new Date().getTime());
         if (response.ok) {
-            data = await response.json();
+            const text = await response.text();
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('Data in .txt file is not valid JSON, trying fallback');
+                data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+            }
         } else {
             console.warn('Remote data not found, checking local storage fallback');
             data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
@@ -58,54 +59,47 @@ async function findWarranty(query) {
     }
 
     const q = query.toLowerCase();
-    return data.find(item =>
-        item.serialNumber.toLowerCase() === q ||
+    return data.find(item => 
+        item.serialNumber.toLowerCase() === q || 
         item.invoiceNumber.toLowerCase() === q
     );
 }
 
 async function saveWarranty(newRecord) {
     const config = getGitHubConfig();
-
-    // Check if we have the necessary credentials to push to GitHub
+    
     if (!config || !config.token || !config.owner || !config.repo) {
-        // No GitHub config? Store locally and warn the user.
         const db = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
         db.push(newRecord);
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(db));
-        return {
-            success: true,
-            mode: 'local',
-            warning: 'Not synced to GitHub! Please configure GitHub settings to make this available to customers.'
+        return { 
+            success: true, 
+            mode: 'local', 
+            warning: 'Not synced! Please configure GitHub settings in the registration page.' 
         };
     }
 
     try {
-        const filePath = 'warranties.json';
-        const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${filePath}`;
-
-        // 1. Get the current file to get its SHA (required for updates)
+        const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${DATA_FILE_PATH}`;
+        
         const getResponse = await fetch(apiUrl, {
             headers: { 'Authorization': `token ${config.token}` }
         });
-
+        
         let currentData = [];
         let sha = null;
 
         if (getResponse.ok) {
             const fileInfo = await getResponse.json();
             sha = fileInfo.sha;
-            // Decode base64 content correctly handling UTF-8
             const content = decodeURIComponent(escape(atob(fileInfo.content)));
             currentData = JSON.parse(content);
         } else if (getResponse.status !== 404) {
-            throw new Error('Failed to connect to GitHub. Check your token/repo settings.');
+            throw new Error('Could not access GitHub repository. Check your token.');
         }
 
-        // 2. Add the new record
         currentData.push(newRecord);
-
-        // 3. Update the file on GitHub
+        
         const putResponse = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
@@ -113,7 +107,7 @@ async function saveWarranty(newRecord) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                message: `Add warranty for ${newRecord.customerName} - ${newRecord.serialNumber}`,
+                message: `Update warranty: ${newRecord.serialNumber}`,
                 content: btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 4)))),
                 sha: sha
             })
@@ -123,10 +117,10 @@ async function saveWarranty(newRecord) {
             return { success: true, mode: 'github' };
         } else {
             const err = await putResponse.json();
-            throw new Error(err.message || 'Failed to update GitHub');
+            throw new Error(err.message || 'Failed to update file on GitHub');
         }
     } catch (error) {
         console.error('GitHub Sync Error:', error);
-        throw new Error('Cloud Sync Failed: ' + error.message);
+        throw new Error(error.message);
     }
 }

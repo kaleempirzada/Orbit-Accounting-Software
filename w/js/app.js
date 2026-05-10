@@ -32,16 +32,20 @@ async function handleRegistration() {
         
         if (result.success) {
             resultBox.style.display = 'block';
-            resultBox.className = 'result-box success';
-            const modeText = result.mode === 'github' ? 'Cloud' : 'Local';
-            resultBox.innerHTML = `<strong>Success!</strong> Product registered successfully (${modeText}). <br> Serial: ${data.serialNumber}`;
-            document.getElementById('registerForm').reset();
-            document.getElementById('expiryDate').value = '';
+            if (result.warning) {
+                resultBox.className = 'result-box error'; // Use error color for warnings
+                resultBox.innerHTML = `<strong>Local Only!</strong> ${result.warning}`;
+            } else {
+                resultBox.className = 'result-box success';
+                resultBox.innerHTML = `<strong>Success!</strong> Product registered to Cloud. <br> Serial: ${data.serialNumber}`;
+                document.getElementById('registerForm').reset();
+                document.getElementById('expiryDate').value = '';
+            }
         }
     } catch (error) {
         resultBox.style.display = 'block';
         resultBox.className = 'result-box error';
-        resultBox.innerHTML = `<strong>Error!</strong> ${error.message || 'Could not register product.'}`;
+        resultBox.innerHTML = `<strong>Sync Failed!</strong> ${error.message}`;
     }
 }
 

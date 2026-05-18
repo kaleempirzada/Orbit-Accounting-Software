@@ -1,5 +1,5 @@
 {
-  "show_ticker": true,
+  "show_ticker": false,
   "interval_seconds": 5,
   "messages": [
     "🎉 More than 900 retail stores use accross J&K!",

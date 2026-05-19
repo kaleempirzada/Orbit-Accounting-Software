@@ -1,9 +1,9 @@
 {
   "show_ticker": true,
-  "interval_seconds": 5,
+  "interval_seconds": 7,
   "messages": [
-    "Now supports Schedule H Drugs in pharmacy mode",
-    "Trusted by pharmacy stores for robust expiry tracking",
-    "Thermal printer support for 80mm size"
+    "Now supports Schedule H Drugs, Dr & Patients name in pharmacy mode",
+    "Trusted by pharmacy stores accross the world for robust expiry tracking",
+    "GST Support with TAX INC/EXC and HSN now available"
   ]
 }

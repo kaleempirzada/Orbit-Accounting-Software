@@ -1,5 +1,5 @@
 {
-  "show_ticker": true,
+  "show_ticker": false,
   "interval_seconds": 7,
   "messages": [
     "Now supports Schedule H Drugs, Dr & Patients name in pharmacy mode",

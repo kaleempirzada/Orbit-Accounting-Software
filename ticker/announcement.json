@@ -1,11 +1,8 @@
 {
-  "show_ticker": false,
+  "show_ticker": true,
   "interval_seconds": 5,
   "messages": [
-    "🎉 More than 900 retail stores use accross J&K!",
-    "🚀 Now supports Schedule H Drugs",
-    "🛠️ Contact 7006677656 for help and support",
-    "🚀 Approved by Microsoft Corporation",
-    "🚀 Trusted by Medical / Pharmacy stores"
+    "1. Now supports Schedule H Drugs in pharmacy mode",
+    "2. Trusted by pharmacy stores for robust expiry tracking",
   ]
 }

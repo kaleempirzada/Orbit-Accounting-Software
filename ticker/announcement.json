@@ -2,33 +2,14 @@
   "show_ticker": true,
   "interval_seconds": 7,
   "messages": [
-    {
-      "text": "🤝 Limited offer: Lifetime purchase offer (offer date till 15-June-2026)",
-      "alert": true
-    },
-    {
-      "text": "NEWS-UPDATE: We are changing the name and logo of the software",
-      "alert": true
-    },
-    {
-      "text": "NEWS-UPDATE: You will normally get update without any loss or change of data",
-      "alert": false
-    },
-    {
-      "text": "NEWS-UPDATE: The new app name will be ESHAL-ACCOUNTING",
-      "alert": true
-    },
-    {
-      "text": "Purchase license for Rs. 149 (INR)= $1.5 USD for unlimited usage",
-      "alert": false
-    },
-    {
-      "text": "⚕️ Trusted by pharmacy stores accross the world for robust expiry tracking",
-      "alert": false
-    },
-    {
-      "text": "💬 For help contact on whatsapp +91-7006677656",
-      "alert": false
-    }
+    "🤝 Limited offer: Lifetime purchase offer (offer date till 15-June-2026)",
+    "🔴 We are changing the name and logo of the software",
+    "🔴 As We are applying for a trademark which does not allow us to use ORBIT name",
+    "🔴 Your data will get migrated automatically and safely",
+    "🔴 Your can continue using the software without any worries",
+    "🔴 All purchases and licenses will continue as they are",
+    "Purchase license for Rs. 149 (INR)= $1.5 USD for unlimited usage",
+    "⚕️ Trusted by pharmacy stores accross the world for robust expiry tracking",
+    "💬 For help contact on whatsapp +91-7006677656"
   ]
 }

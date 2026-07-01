@@ -1,10 +1,9 @@
 {
   "show_ticker": true,
-  "interval_seconds": 7,
+  "interval_seconds": 10,
   "messages": [
-    "🔥 🔥 Android app launched",
-    "Minzah is a TRADE-MARK Brand",
-    "🔥 🔥Update Minzah Business Manager on Laptop/Desktop v 8.0.1",
+   
+    "🔥 🔥Update Minzah Business Manager on Laptop/Desktop to v8.0.7",
     " 💬 For help contact on whatsapp +91-9419795983",
     " ✉ Email: info@minzah.in"
   ]

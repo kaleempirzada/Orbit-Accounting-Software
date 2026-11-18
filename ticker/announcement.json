@@ -1,5 +1,5 @@
 {
-  "show_ticker": true,
+  "show_ticker": false,
   "interval_seconds": 7,
   "messages": [
     "🔥NEW UPDATE v8.9.6, Update from MS STORE ** NOW YOU CAN EXCHANGE THE SOLD ITEMS WHILE CREATING NEW BILL" ,
